@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Change Password - YES COMMENT</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <h1>Change Password</h1>
+    <% if (errorMessage) { %>
+        <p style="color: red;"><%= errorMessage %></p>
+    <% } %>
+    <div>
+        <p style="border-left: 4px solid #5bc0de; padding: 5px;">
+            <strong style="display: block;">
+                How the current password is stored in database (implemented only for educational purposes to show  characteristics of Sensitive Data Exposure):
+            </strong>
+            <span>
+                <% if (currentPassword) { %><%= currentPassword %><% } else { %>Not available<% } %>
+            </span>
+        </p>
+    </div>
+    <form action="/change" method="post">
+        <label for="currentPassword">Current Password:</label>
+        <input type="password" id="currentPassword" name="currentPassword" required>
+
+        <label for="newPassword">New Password:</label>
+        <input type="password" id="newPassword" name="newPassword" required>
+
+        <div class="checkbox">
+            <input type="checkbox" id="sensitiveData" name="sensitiveData">
+            <label for="sensitiveData">Enable Sensitive Data Exposure (store new password as plain text)</label>
+        </div>
+        <button type="submit">Change Password</button>
+    </form>
+    <a href="/home">Back to Home</a>
+</body>
+</html>
+

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home - YES COMMENT</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <h1>YES COMMENT</h1>
+    <p>Welcome back, <%= email %></p>
+    <% if (errorMessage) { %>
+        <div class="error-message"><%= errorMessage %></div>
+    <% } %>
+    <a href="/change">Change password</a>
+    <a href="/logout">Logout</a>
+    <!-- Comment Form -->
+    <form action="/home/comment" method="post">
+        <textarea name="commentText" placeholder="Write your comment here..."></textarea>
+        <div>
+            <input type="checkbox" name="xssEnabled" id="xssEnabled" <%= xssEnabled ? 'checked' : '' %>>
+            <label for="xssEnabled">Enable XSS Vulnerability</label>
+        </div>
+        <button type="submit">Post Comment</button>
+    </form>
+    <!-- Display Comments -->
+    <div class="comments">
+        <%
+        function formatTimestamp(timestamp) {
+            const date = new Date(timestamp);
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
+            const year = date.getFullYear();
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            return `${day}:${month}:${year} ${hours}:${minutes}`;
+            }
+        %>
+        <div class="comments">
+            <% comments.forEach(comment => { %>
+                <div class="comment-box">
+                    <div class="comment-header">
+                        <span class="comment-email"><%= comment.email %></span>
+                        <span class="comment-timestamp"><%= formatTimestamp(comment.created_at) %></span>
+                    </div>
+                    <% if (xssEnabled) { %>
+                        <!-- UNSAFE: Render the comment as raw HTML -->
+                        <p class="comment-text"><%- comment.comment_text %></p>
+                    <% } else { %>
+                        <!-- SAFE: Escape HTML to prevent XSS -->
+                        <p class="comment-text"><%= comment.comment_text %></p>
+                    <% } %>
+                </div>
+            <% }); %>
+        </div>        
+    </div>
+</div>
+</body>
+</html>

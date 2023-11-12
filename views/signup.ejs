@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up - YES COMMENT</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <h1>Sign Up</h1>
+    <% if (errorMessage) { %>
+        <div class="error-message"><%= errorMessage %></div>
+    <% } %>
+    <form action="/signup" method="post">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <div class="checkbox">
+            <input type="checkbox" id="sensitiveData" name="sensitiveData">
+            <label for="sensitiveData">Enable Sensitive Data Exposure (store password as plain text)</label>
+        </div>
+
+        <button type="submit">Sign Up</button>
+    </form>
+    <a href="/login">Already have an account? Login</a>
+</body>
+</html>
