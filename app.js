@@ -32,7 +32,6 @@ async function initializeDatabase() {
         //await clearDatabase();
         await createTables();
         //await displayAllTables();
-        //console.log('Tables displayed successfully.');
     } catch (error) {
         console.error('Error during database initialization:', error);
     }
