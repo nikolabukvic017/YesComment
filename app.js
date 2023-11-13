@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const https = require('https');
+const fs = require('fs');
 const path = require('path');
 const createError = require('http-errors');
 const session = require('express-session');
@@ -17,6 +19,10 @@ app.use(morgan('dev'));
 // For Render deploy
 const externalUrl = process.env.RENDER_EXTERNAL_URL;
 const port = externalUrl && process.env.PORT ? parseInt(process.env.PORT) : 3000;
+const config = {
+    secret: process.env.SECRET,
+    baseURL: externalUrl || `https://localhost:${port}`
+};
 
 app.use(session({
     secret: process.env.SESSION_SECRET || 'default_secret_key',
@@ -83,6 +89,18 @@ app.use(function(err, req, res, next) {
 });
 
 // put in package.json in development "start": "nodemon app.js --ext js,ejs" instead of  "build": "npm run clean","clean": "rm -rf dist","start": "node server.js"
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
+if (externalUrl) {
+    const hostname = '0.0.0.0'; // ne 127.0.0.1
+    app.listen(port, hostname, () => {
+        console.log(`Server locally running at http://${hostname}:${port}/ and from outside on ${externalUrl}`);
+    });
+  }
+  else {
+    https.createServer({
+        key: fs.readFileSync('server.key'),
+        cert: fs.readFileSync('server.cert')
+    }, app)
+    .listen(port, () => {
+        console.log(`Server running at https://localhost:${port}/`);
+    });
+  }
