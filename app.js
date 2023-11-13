@@ -45,7 +45,7 @@ async function initializeDatabase() {
     try {
         //await clearDatabase();
         await createTables();
-        await displayAllTables();
+        //await displayAllTables();
     } catch (error) {
         console.error('Error during database initialization:', error);
     }
@@ -97,7 +97,7 @@ app.use(function(err, req, res, next) {
 
 
 // put in package.json in development "start": "nodemon app.js --ext js,ejs" instead of  "build": "npm run clean","clean": "rm -rf dist","start": "node server.js"
-if (externalUrl) {
+if (externalUrl === undefined) {
     const hostname = '0.0.0.0'; // ne 127.0.0.1
     app.listen(port, hostname, () => {
         console.log(`Server locally running at http://${hostname}:${port}/ and from outside on ${externalUrl}`);
