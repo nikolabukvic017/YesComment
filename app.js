@@ -50,7 +50,7 @@ async function initializeDatabase() {
     }
 }
 
-initializeDatabase();
+//initializeDatabase();
 
 const indexRouter = require('./routes/index');
 const loginRouter = require('./routes/login');
