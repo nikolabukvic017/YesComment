@@ -33,7 +33,6 @@ router.get('/', async (req, res) => {
 
 router.post('/comment', async (req, res) => {
     if (!req.session.user) {
-        console.log("BUG");
         return res.redirect('/');
     }
 

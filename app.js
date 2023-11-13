@@ -17,6 +17,7 @@ const { displayAllTables } = require('./database/db');
 
 dotenv.config();
 app.use(morgan('dev'));
+app.set('trust proxy', 1)
 
 // For Render deploy
 const externalUrl = process.env.RENDER_EXTERNAL_URL;
