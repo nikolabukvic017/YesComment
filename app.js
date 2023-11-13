@@ -27,7 +27,7 @@ const config = {
 app.use(session({
     secret: process.env.SESSION_SECRET || 'default_secret_key',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: { 
         secure: process.env.NODE_ENV === 'production' // Set to true in production
     }

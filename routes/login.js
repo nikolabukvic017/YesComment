@@ -50,10 +50,8 @@ router.post('/', async (req, res) => {
             email: user.email
         };
 
-        console.log('Me here');
         res.redirect('/home');
     } catch (error) {
-        console.log('me not here');
         console.error('Login error:', error);
         res.redirect('/login'); // Redirect back or handle the error as needed
     }
