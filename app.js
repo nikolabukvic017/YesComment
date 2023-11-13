@@ -68,7 +68,6 @@ app.use('/', indexRouter);
 app.use('/login', loginRouter);
 app.use('/signup', signupRouter);
 app.use('/home', homeRouter);
-app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 app.use('/change',changePasswordRouter)
 
