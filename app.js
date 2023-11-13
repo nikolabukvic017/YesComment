@@ -27,14 +27,13 @@ const config = {
 };
 
 app.use(session({
-    /*
     store: new pgSession({
         pool: pool, // Connection pool
-        tableName: 'session' // Use another table name if you prefer
-    }),*/
+        //tableName: 'session' // Use another table name if you prefer
+    }),
     secret: process.env.SESSION_SECRET || 'default_secret_key',
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     cookie: { 
         secure: process.env.NODE_ENV === 'production', // Set to true if production
         httpOnly: true // Prevents client-side JS from accessing the cookie
