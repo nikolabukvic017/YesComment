@@ -27,10 +27,11 @@ const config = {
 };
 
 app.use(session({
+    /*
     store: new pgSession({
         pool: pool, // Connection pool
         tableName: 'session' // Use another table name if you prefer
-    }),
+    }),*/
     secret: process.env.SESSION_SECRET || 'default_secret_key',
     resave: true,
     saveUninitialized: true,
