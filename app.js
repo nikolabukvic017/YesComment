@@ -5,8 +5,10 @@ const fs = require('fs');
 const path = require('path');
 const createError = require('http-errors');
 const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
 const morgan = require('morgan');
 const dotenv = require('dotenv');
+const { pool } = require('./database/db');
 
 //console.log(require.resolve('./database/db'));
 const { createTables } = require('./database/db');
@@ -25,11 +27,16 @@ const config = {
 };
 
 app.use(session({
+    store: new pgSession({
+        pool: pool, // Connection pool
+        tableName: 'session' // Use another table name if you prefer
+    }),
     secret: process.env.SESSION_SECRET || 'default_secret_key',
     resave: true,
     saveUninitialized: true,
     cookie: { 
-        secure: process.env.NODE_ENV === 'production' // Set to true in production
+        secure: process.env.NODE_ENV === 'production', // Set to true if production
+        httpOnly: true // Prevents client-side JS from accessing the cookie
     }
 }));
 
@@ -86,6 +93,7 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
+
 
 // put in package.json in development "start": "nodemon app.js --ext js,ejs" instead of  "build": "npm run clean","clean": "rm -rf dist","start": "node server.js"
 if (externalUrl) {
