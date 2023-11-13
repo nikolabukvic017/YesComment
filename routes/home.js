@@ -22,8 +22,7 @@ router.get('/', async (req, res) => {
         res.render('home', {
             email: req.session.user.email,
             comments: comments,
-            xssEnabled: xssEnabled,
-            errorMessage: ''
+            xssEnabled: xssEnabled
         });
     } catch (error) {
         console.error('Error fetching comments:', error);
@@ -36,30 +35,12 @@ router.post('/comment', async (req, res) => {
         return res.redirect('/');
     }
 
-    const { commentText } = req.body;
+    // Update the XSS enabled state based on the checkbox
     xssEnabled = !!req.body.xssEnabled;
-
-    if (!commentText.trim()) {
-        const result = await pool.query(`
-            SELECT Comments.comment_text, Users.email, Comments.created_at
-            FROM Comments
-            JOIN Users ON Comments.user_id = Users.user_id
-            ORDER BY Comments.created_at DESC`);
-        const comments = result.rows;
-
-        return res.render('home', {
-            email: req.session.user.email,
-            comments: comments,
-            xssEnabled: xssEnabled,
-            errorMessage: 'At least comment something...'
-        });
-    }
 
     try {
         // Insert new comment into the database
-        if (commentText = '') {
-            return res.render('home', { errorMessage: 'At least comment something...' });
-        }
+        const { commentText } = req.body;
         await pool.query('INSERT INTO Comments (user_id, comment_text) VALUES ($1, $2)', 
                          [req.session.user.id, commentText]);
 
