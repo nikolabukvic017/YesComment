@@ -6,6 +6,7 @@ let xssEnabled = false;
 
 router.get('/', async (req, res) => {
     if (!req.session.user) {
+        console.log('NOSESSION');
         return res.redirect('/');
     }
 
